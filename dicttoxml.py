@@ -308,14 +308,14 @@ def convert_list(items, ids, parent, attr_type, item_func, cdata):
             unicode_me(item), item_name, type(item).__name__)
         )
         attr = {} if not ids else { 'id': '%s_%s' % (this_id, i+1) }
-        if isinstance(item, numbers.Number) or type(item) in (str, unicode):
+        if type(item) == bool:
+            addline(convert_bool(item_name, item, attr_type, cdata, attr))
+
+        elif isinstance(item, numbers.Number) or type(item) in (str, unicode):
             addline(convert_kv(item_name, item, attr_type, cdata, attr))
 
         elif hasattr(item, 'isoformat'): # datetime
             addline(convert_kv(item_name, item.isoformat(), attr_type, cdata, attr))
-
-        elif type(item) == bool:
-            addline(convert_bool(item_name, item, attr_type, cdata, attr))
 
         elif isinstance(item, dict):
             if not attr_type:
